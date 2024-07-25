@@ -41,10 +41,7 @@ class ElemFormat(Enum):
     def from_str(s):
         assert(s != None), "String elem_format == None"
         s = s.lower()
-        if hasattr(ElemFormat, s):
-            return getattr(ElemFormat, s)
-        else:
-            raise Exception("Undefined elem format", s)
+        return getattr(ElemFormat, s)
 
 
 def _get_min_norm(ebits):
