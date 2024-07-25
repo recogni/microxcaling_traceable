@@ -108,7 +108,7 @@ def _reshape_to_blocks(A, axes, block_size):
 
     # Add extra dimension for tiles
     for i in range(len(axes)):
-        axes[i] += i  # Shift axes due to added dimensions
+        # axes[i] += i  # Shift axes due to added dimensions
         A = torch.unsqueeze(A, dim=axes[i] + 1)
 
     # Pad to block_size
