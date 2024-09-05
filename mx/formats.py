@@ -24,18 +24,22 @@ class RoundingMode(IntEnum):
 # Enum for scalar data formats
 class ElemFormat(Enum):
     int8 = 1
-    int4 = 2
-    int2 = 3
-    fp8_e5m2 = 4
-    fp8_e4m3 = 5
-    fp6_e3m2 = 6
-    fp6_e2m3 = 7
-    fp4 = 8
-    fp4_e2m1 = 8
-    float16 = 9
-    fp16 = 9
-    bfloat16 = 10
-    bf16 = 10
+    int7 = 2
+    int6 = 3
+    int5 = 4
+    int4 = 5
+    int3 = 6
+    int2 = 7
+    fp8_e5m2 = 8
+    fp8_e4m3 = 9
+    fp6_e3m2 = 10
+    fp6_e2m3 = 11
+    fp4 = 12
+    fp4_e2m1 = 12
+    float16 = 13
+    fp16 = 13
+    bfloat16 = 14
+    bf16 = 14
 
     @staticmethod
     def from_str(s):
@@ -83,8 +87,20 @@ def _get_format_params(fmt):
     if fmt == ElemFormat.int8:
         ebits, mbits = 0, 8
         emax = 0
+    elif fmt == ElemFormat.int7:
+        ebits, mbits = 0, 7
+        emax = 0
+    elif fmt == ElemFormat.int6:
+        ebits, mbits = 0, 6
+        emax = 0
+    elif fmt == ElemFormat.int5:
+        ebits, mbits = 0, 5
+        emax = 0
     elif fmt == ElemFormat.int4:
         ebits, mbits = 0, 4
+        emax = 0
+    elif fmt == ElemFormat.int3:
+        ebits, mbits = 0, 3
         emax = 0
     elif fmt == ElemFormat.int2:
         ebits, mbits = 0, 2
