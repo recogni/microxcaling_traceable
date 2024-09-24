@@ -114,43 +114,43 @@ def _get_format_params(fmt):
         ebits, mbits = 0, 2
         emax = 0
     elif fmt == ElemFormat.fp8_e5m2:
-        ebits, mbits = 5, 2
+        ebits, mbits = 5, 4
         emax = 2**(ebits - 1) - 1
     elif fmt == ElemFormat.fp8_e4m3:
-        ebits, mbits = 4, 3
+        ebits, mbits = 4, 5
         emax = 2**(ebits - 1)
     elif fmt == ElemFormat.fp6_e3m2:
-        ebits, mbits = 3, 2
+        ebits, mbits = 3, 4
         emax = 2**(ebits - 1)
     elif fmt == ElemFormat.fp6_e2m3:
-        ebits, mbits = 2, 3
+        ebits, mbits = 2, 5
         emax = 2**(ebits - 1)
     elif fmt == ElemFormat.fp5_e4m0:
-        ebits, mbits = 4, 0
+        ebits, mbits = 4, 2
         emax = 2**(ebits - 1)
     elif fmt == ElemFormat.fp5_e3m1:
-        ebits, mbits = 3, 1
+        ebits, mbits = 3, 3
         emax = 2**(ebits - 1)
     elif fmt == ElemFormat.fp5_e2m2:
-        ebits, mbits = 2, 2
+        ebits, mbits = 2, 4
         emax = 2**(ebits - 1)
     elif fmt == ElemFormat.fp5_e1m3:
-        ebits, mbits = 1, 3
+        ebits, mbits = 1, 5
         emax = 2**(ebits - 1)
     elif fmt == ElemFormat.fp4_e3m0:
-        ebits, mbits = 3, 0
+        ebits, mbits = 3, 2
         emax = 2**(ebits - 1)
     elif fmt == ElemFormat.fp4_e2m1:
-        ebits, mbits = 2, 1
+        ebits, mbits = 2, 3
         emax = 2**(ebits - 1)
     elif fmt == ElemFormat.fp4_e1m2:
-        ebits, mbits = 1, 2
+        ebits, mbits = 1, 4
         emax = 2**(ebits - 1)
     elif fmt == ElemFormat.fp3_e2m0:
-        ebits, mbits = 2, 0
+        ebits, mbits = 2, 2
         emax = 2**(ebits - 1)
     elif fmt == ElemFormat.fp3_e1m1:
-        ebits, mbits = 1, 1
+        ebits, mbits = 1, 3
         emax = 2**(ebits - 1)
     elif fmt == ElemFormat.float16:
         ebits, mbits = 5, 12
