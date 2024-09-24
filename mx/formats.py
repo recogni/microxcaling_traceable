@@ -34,12 +34,21 @@ class ElemFormat(Enum):
     fp8_e4m3 = 9
     fp6_e3m2 = 10
     fp6_e2m3 = 11
-    fp4 = 12
-    fp4_e2m1 = 12
-    float16 = 13
-    fp16 = 13
-    bfloat16 = 14
-    bf16 = 14
+    fp5_e4m0 = 12
+    fp5_e3m1 = 13
+    fp5_e2m2 = 14
+    fp5_e1m3 = 15
+    fp4_e3m0 = 16
+    fp4_e2m1 = 17
+    fp4_e1m2 = 18
+    fp3_e2m0 = 19
+    fp3_e1m1 = 20
+    fp4 = 21
+    fp4_e2m1 = 21
+    float16 = 22
+    fp16 = 22
+    bfloat16 = 23
+    bf16 = 23
 
     @staticmethod
     def from_str(s):
@@ -106,19 +115,43 @@ def _get_format_params(fmt):
         ebits, mbits = 0, 2
         emax = 0
     elif fmt == ElemFormat.fp8_e5m2:
-        ebits, mbits = 5, 4
+        ebits, mbits = 5, 2
         emax = 2**(ebits - 1) - 1
     elif fmt == ElemFormat.fp8_e4m3:
-        ebits, mbits = 4, 5
+        ebits, mbits = 4, 3
         emax = 2**(ebits - 1)
     elif fmt == ElemFormat.fp6_e3m2:
-        ebits, mbits = 3, 4
+        ebits, mbits = 3, 2
         emax = 2**(ebits - 1)
     elif fmt == ElemFormat.fp6_e2m3:
-        ebits, mbits = 2, 5
-        emax = 2**(ebits - 1)
-    elif fmt == ElemFormat.fp4:
         ebits, mbits = 2, 3
+        emax = 2**(ebits - 1)
+    elif fmt == ElemFormat.fp5_e4m0:
+        ebits, mbits = 4, 0
+        emax = 2**(ebits - 1)
+    elif fmt == ElemFormat.fp5_e3m1:
+        ebits, mbits = 3, 1
+        emax = 2**(ebits - 1)
+    elif fmt == ElemFormat.fp5_e2m2:
+        ebits, mbits = 2, 2
+        emax = 2**(ebits - 1)
+    elif fmt == ElemFormat.fp5_e1m3:
+        ebits, mbits = 1, 3
+        emax = 2**(ebits - 1)
+    elif fmt == ElemFormat.fp4_e3m0:
+        ebits, mbits = 3, 0
+        emax = 2**(ebits - 1)
+    elif fmt == ElemFormat.fp4_e2m1:
+        ebits, mbits = 2, 1
+        emax = 2**(ebits - 1)
+    elif fmt == ElemFormat.fp4_e1m2:
+        ebits, mbits = 1, 2
+        emax = 2**(ebits - 1)
+    elif fmt == ElemFormat.fp3_e2m0:
+        ebits, mbits = 2, 0
+        emax = 2**(ebits - 1)
+    elif fmt == ElemFormat.fp3_e1m1:
+        ebits, mbits = 1, 1
         emax = 2**(ebits - 1)
     elif fmt == ElemFormat.float16:
         ebits, mbits = 5, 12
