@@ -43,8 +43,7 @@ class ElemFormat(Enum):
     fp4_e1m2 = 18
     fp3_e2m0 = 19
     fp3_e1m1 = 20
-    fp4 = 21
-    fp4_e2m1 = 21
+    fp4 = 17
     float16 = 22
     fp16 = 22
     bfloat16 = 23
