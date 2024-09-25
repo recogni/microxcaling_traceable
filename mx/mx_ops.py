@@ -180,6 +180,7 @@ def _quantize_mx(
     round="nearest",
     flush_fp32_subnorms=False,
     custom_cuda=False,
+    dequantize_n_times=1
 ):
     """Function used for MX* quantization
     """
@@ -287,9 +288,14 @@ def _quantize_mx(
         A = _quantize_elemwise_core(
                 A, mbits, ebits, max_norm, round=round,
                 allow_denorm=True, saturate_normals=True,
-                custom_cuda=custom_cuda)
+                custom_cuda=custom_cuda
+                dequantize_n_times=dequantize_n_times)
 
         A = A * (2**shared_exp)
+
+        if dequantize_n_times > 1:
+            for _ in range(1, dequantize_n_times):
+                A * (2**shared_exp)
 
     # Undo tile reshaping
     if block_size:

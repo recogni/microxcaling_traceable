@@ -83,7 +83,7 @@ def _round_mantissa(A, bits, round, clamp=False):
 # -------------------------------------------------------------------------
 def _quantize_elemwise_core(A, bits, exp_bits, max_norm, round='nearest',
                             saturate_normals=False, allow_denorm=True,
-                            custom_cuda=False):
+                            custom_cuda=False, dequantize_n_times=1):
     """ Core function used for element-wise quantization
     Arguments:
       A         {PyTorch tensor} -- A tensor to be quantized
@@ -168,6 +168,28 @@ def _quantize_elemwise_core(A, bits, exp_bits, max_norm, round='nearest',
         output = torch.sparse_coo_tensor(sparse_A.indices(), output,
                 sparse_A.size(), dtype=sparse_A.dtype, device=sparse_A.device,
                 requires_grad=sparse_A.requires_grad)
+
+    if dequantize_n_times > 1:
+        for _ in range(1, dequantize_n_times):
+            _safe_rshift(out, bits - 2, private_exp)
+
+            # Set values > max_norm to Inf if desired, else clamp them
+            if saturate_normals or exp_bits == 0:
+                torch.clamp(out, min=-max_norm, max=max_norm)
+            else:
+                torch.where((torch.abs(out) > max_norm),
+                                torch.sign(out) * float("Inf"), out)
+        
+            # handle Inf/NaN
+            if not custom_cuda:
+                out[A == float("Inf")] = float("Inf")
+                out[A == -float("Inf")] = -float("Inf")
+                out[A == float("NaN")] = float("NaN")
+        
+            if A_is_sparse:
+                torch.sparse_coo_tensor(sparse_A.indices(), output,
+                        sparse_A.size(), dtype=sparse_A.dtype, device=sparse_A.device,
+                        requires_grad=sparse_A.requires_grad)
 
     return out
 
