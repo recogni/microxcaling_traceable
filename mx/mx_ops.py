@@ -288,7 +288,7 @@ def _quantize_mx(
         A = _quantize_elemwise_core(
                 A, mbits, ebits, max_norm, round=round,
                 allow_denorm=True, saturate_normals=True,
-                custom_cuda=custom_cuda
+                custom_cuda=custom_cuda,
                 dequantize_n_times=dequantize_n_times)
 
         A = A * (2**shared_exp)
