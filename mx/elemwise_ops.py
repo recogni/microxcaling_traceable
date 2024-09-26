@@ -146,10 +146,10 @@ def _quantize_elemwise_core(A, bits, exp_bits, max_norm, round='nearest',
     # Scale up so appropriate number of bits are in the integer portion of the number
     out = _safe_lshift(out, bits - 2, private_exp)
 
-    out = _round_mantissa(out, bits, round, clamp=False)
+    compressed = _round_mantissa(out, bits, round, clamp=False)
 
     # Undo scaling
-    out = _safe_rshift(out, bits - 2, private_exp)
+    out = _safe_rshift(compressed, bits - 2, private_exp)
 
     # Set values > max_norm to Inf if desired, else clamp them
     if saturate_normals or exp_bits == 0:
@@ -171,13 +171,13 @@ def _quantize_elemwise_core(A, bits, exp_bits, max_norm, round='nearest',
 
     if dequantize_n_times > 1:
         for _ in range(1, dequantize_n_times):
-            _safe_rshift(out, bits - 2, private_exp)
+            out = _safe_rshift(compressed, bits - 2, private_exp)
 
             # Set values > max_norm to Inf if desired, else clamp them
             if saturate_normals or exp_bits == 0:
-                torch.clamp(out, min=-max_norm, max=max_norm)
+                out = torch.clamp(out, min=-max_norm, max=max_norm)
             else:
-                torch.where((torch.abs(out) > max_norm),
+                out = torch.where((torch.abs(out) > max_norm),
                                 torch.sign(out) * float("Inf"), out)
         
             # handle Inf/NaN
@@ -187,7 +187,7 @@ def _quantize_elemwise_core(A, bits, exp_bits, max_norm, round='nearest',
                 out[A == float("NaN")] = float("NaN")
         
             if A_is_sparse:
-                torch.sparse_coo_tensor(sparse_A.indices(), output,
+                output = torch.sparse_coo_tensor(sparse_A.indices(), output,
                         sparse_A.size(), dtype=sparse_A.dtype, device=sparse_A.device,
                         requires_grad=sparse_A.requires_grad)
 

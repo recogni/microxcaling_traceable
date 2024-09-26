@@ -291,17 +291,17 @@ def _quantize_mx(
                 custom_cuda=custom_cuda,
                 dequantize_n_times=dequantize_n_times)
 
-        A = A * (2**shared_exp)
+        B = A * (2**shared_exp)
 
         if dequantize_n_times > 1:
             for _ in range(1, dequantize_n_times):
-                A * (2**shared_exp)
+                B = A * (2**shared_exp)
 
     # Undo tile reshaping
     if block_size:
-        A = _undo_reshape_to_blocks(A, padded_shape, orig_shape, axes)
+        B = _undo_reshape_to_blocks(B, padded_shape, orig_shape, axes)
 
-    return A
+    return B
 
 
 def quantize_mx_op(
