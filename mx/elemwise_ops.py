@@ -146,7 +146,7 @@ def _quantize_elemwise_core(A, bits, exp_bits, max_norm, round='nearest',
     # Scale up so appropriate number of bits are in the integer portion of the number
     out = _safe_lshift(out, bits - 2, private_exp)
 
-    compressed = _round_mantissa(out, bits, round, clamp=False)
+    out = _round_mantissa(out, bits, round, clamp=False)
 
     # Undo scaling
     out = _safe_rshift(compressed, bits - 2, private_exp)
@@ -171,7 +171,7 @@ def _quantize_elemwise_core(A, bits, exp_bits, max_norm, round='nearest',
 
     if dequantize_n_times > 1:
         for _ in range(1, dequantize_n_times):
-            out = _safe_rshift(compressed, bits - 2, private_exp)
+            out = _safe_rshift(out, bits - 2, private_exp)
 
             # Set values > max_norm to Inf if desired, else clamp them
             if saturate_normals or exp_bits == 0:
