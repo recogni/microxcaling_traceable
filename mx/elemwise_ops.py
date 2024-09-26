@@ -148,8 +148,7 @@ def _quantize_elemwise_core(A, bits, exp_bits, max_norm, round='nearest',
 
     out = _round_mantissa(out, bits, round, clamp=False)
 
-    if dequantize_n_times:
-        out = out.repeat(dequantize_n_times, *([1] * len(out.shape)))
+    out = out.repeat(dequantize_n_times, *([1] * len(out.shape)))
 
     # Undo scaling
     out = _safe_rshift(out, bits - 2, private_exp)
@@ -163,16 +162,16 @@ def _quantize_elemwise_core(A, bits, exp_bits, max_norm, round='nearest',
 
     # handle Inf/NaN
     if not custom_cuda:
-        out[A == float("Inf")] = float("Inf")
-        out[A == -float("Inf")] = -float("Inf")
-        out[A == float("NaN")] = float("NaN")
+        out[:,A == float("Inf")] = float("Inf")
+        out[:,A == -float("Inf")] = -float("Inf")
+        out[:,A == float("NaN")] = float("NaN")
 
     if A_is_sparse:
         output = torch.sparse_coo_tensor(sparse_A.indices(), output,
                 sparse_A.size(), dtype=sparse_A.dtype, device=sparse_A.device,
                 requires_grad=sparse_A.requires_grad)
 
-    return out[0] if dequantize_n_times > 1 else out
+    return out[0]
 
 
 def _quantize_elemwise(A, elem_format, round='nearest', custom_cuda=False,

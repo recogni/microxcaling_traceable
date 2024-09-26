@@ -291,13 +291,9 @@ def _quantize_mx(
                 custom_cuda=custom_cuda,
                 dequantize_n_times=dequantize_n_times)
 
-        if dequantize_n_times:
-            A = A.repeat(dequantize_n_times, *([1] * len(A.shape)))
-
+        A = A.repeat(dequantize_n_times, *([1] * len(A.shape)))
         A = A * (2**shared_exp)
-
-        if dequantize_n_times:
-            A = A[0]
+        A = A[0]
 
     # Undo tile reshaping
     if block_size:
